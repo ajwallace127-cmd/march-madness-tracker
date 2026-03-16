@@ -1,0 +1,45 @@
+name: Update Bracket Standings
+
+on:
+  # ── Run automatically every 2 hours during tournament dates ──
+  schedule:
+    - cron: "0 */2 * * *"   # every 2 hours, all day
+
+  # ── Also allow manual trigger from the GitHub Actions tab ──
+  workflow_dispatch:
+
+  # ── Also re-run whenever a new entries file is pushed ──
+  push:
+    paths:
+      - "bracket_entries.xlsx"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # needed to commit index.html back to the repo
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests pandas openpyxl
+
+      - name: Generate updated standings website
+        run: python process_bracket.py bracket_entries.xlsx
+
+      - name: Commit & push updated index.html
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          # Only commit if something actually changed
+          git diff --cached --quiet || git commit -m "Auto-update standings [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
