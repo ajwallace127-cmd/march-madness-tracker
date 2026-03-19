@@ -1,9 +1,9 @@
 name: Update Bracket Standings
 
 on:
-  # ── Run automatically every 2 hours during tournament dates ──
+  # ── Run automatically every hour during tournament dates ──
   schedule:
-    - cron: "0 */2 * * *"   # every 2 hours, all day
+    - cron: "0 * * * *"     # every hour, all day
 
   # ── Also allow manual trigger from the GitHub Actions tab ──
   workflow_dispatch:
@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v5.4.0
         with:
           python-version: "3.11"
 
