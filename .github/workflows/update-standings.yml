@@ -42,4 +42,4 @@ jobs:
           git add index.html
           # Only commit if something actually changed
           git diff --cached --quiet || git commit -m "Auto-update standings [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-          git push
+          git push || true   # no-op if nothing to push; prevents false failure
