@@ -267,7 +267,7 @@
     <div class="hero-ball">🏀</div>
     <div class="hero-title">March Madness 2026 Bracket Challenge</div>
     <div class="hero-sub">Live Standings &amp; Stats</div>
-    <div class="hero-updated">Last updated: March 19, 2026 at 03:20 AM</div>
+    <div class="hero-updated">Last updated: <span id="last-updated-ts" data-utc="2026-03-19T03:25:12Z"></span></div>
 
     <div class="row g-3 mt-3 justify-content-center">
       <div class="col-6 col-sm-3">
@@ -293,8 +293,8 @@
       </div>
       <div class="col-6 col-sm-3">
         <div class="stat-card">
-          <div class="sc-label">Teams Alive</div>
-          <div class="sc-value">0</div>
+          <div class="sc-label">Still Standing</div>
+          <div class="sc-value">66</div>
           <div class="sc-sub">0 eliminated</div>
         </div>
       </div>
@@ -4983,6 +4983,19 @@ function sortTeams(col) {
   if (div && out.length) tbody.appendChild(div);
   out.forEach(r => tbody.appendChild(r));
 }
+
+// ── LAST UPDATED TIMESTAMP (convert UTC → viewer's local time) ────────
+(function() {
+  const el = document.getElementById('last-updated-ts');
+  if (!el) return;
+  const utc = el.dataset.utc;
+  if (!utc) return;
+  const d = new Date(utc);
+  el.textContent = d.toLocaleString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+})();
 
 // ── ALL PICKS SEARCH ──────────────────────────────────────
 function filterRaw() {
